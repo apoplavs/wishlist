@@ -1,9 +1,16 @@
 <IfModule mod_rewrite.c>
     <IfModule mod_negotiation.c>
-        Options -MultiViews -Indexes
+        Options -MultiViews #-Indexes
     </IfModule>
 
     RewriteEngine On
+
+    # Redirect to https
+    RewriteCond %{HTTPS} !=on
+    # This checks to make sure the connection is not already HTTPS
+
+    RewriteRule ^/?(.*) https://%{SERVER_NAME}/$1 [R,L]
+    # This rule will redirect users from their original location, to the same location but using HTTPS.
 
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
